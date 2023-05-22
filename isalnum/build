@@ -1,0 +1,3 @@
+as isalnum.asm -o isalnum.o
+ld isalnum.o -o isalnum
+./isalnum; echo $?

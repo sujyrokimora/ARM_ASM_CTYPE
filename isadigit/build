@@ -1,0 +1,3 @@
+as isadigit.asm -o isadigit.o
+ld isadigit.o -o isadigit
+./isadigit; echo $?
