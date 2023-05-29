@@ -1,6 +1,6 @@
 @ Data Section
 .data
-in: .asciz "1"           @ Input string
+in: .asciz "a"              @ Input string
 out:  .asciz "Result: %d\n" @ Output string
 
 .global printf  @ Write to console output
@@ -24,10 +24,10 @@ main:
  * R0 - char
  */
 islower:
-  CMP   R0, #'0'     @ Check if R0 value is < code char 'a'.
+  CMP   R0, #'a'     @ Check if R0 value is < code char 'a'.
   MOVLT R0, #0       @ If true is not lower, return 0.
   BLT   exit_islower @ Exit
-  CMP   R0, #'9'     @ Check if R0 value is > char 'z'.
+  CMP   R0, #'z'     @ Check if R0 value is > char 'z'.
   MOVGT R0, #0       @ If true is not lower, return 0.
   BGT   exit_islower @ Exit
   MOVLE R0, #1       @   

@@ -1,0 +1,3 @@
+as islower.asm -o islower.o
+gcc islower.o -o islower
+./islower; echo $?
