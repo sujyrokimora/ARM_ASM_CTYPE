@@ -1,6 +1,6 @@
 @ Data Section
 .data
-in: .asciz "A"              @ Input string
+in: .asciz "a"              @ Input string
 out:  .asciz "Result: %d\n" @ Output string
 
 .global printf  @ Write to console output
@@ -13,7 +13,7 @@ out:  .asciz "Result: %d\n" @ Output string
 main:
   LDR  R1, =in      @ Charge string with caracter.
   LDRB R0, [R1, #0] @ Read byte caracter.
-  BL   islower      @ Call islower().
+  BL   isupper      @ Call islower().
   MOV  R1, R0       @ Ajustar segundo parâmetro do printf com o valor de retorno.
   LDR  R0, =out     @ Carregar string de saída como primeiro parâmetro do printf.
   BL   printf       @ Chamar printf para mostrar o resultado.
@@ -23,16 +23,16 @@ main:
  * islower(R0)
  * R0 - char
  */
-islower:
+isupper:
   CMP   R0, #'A'     @ Check if R0 value is < code char 'a'.
   MOVLT R0, #0       @ If true is not lower, return 0.
-  BLT   exit_islower @ Exit
+  BLT   exit_isupper @ Exit
   CMP   R0, #'Z'     @ Check if R0 value is > char 'z'.
   MOVGT R0, #0       @ If true is not lower, return 0.
-  BGT   exit_islower @ Exit
+  BGT   exit_isupper @ Exit
   MOVLE R0, #1       @   
   
-  exit_islower:
+  exit_isupper:
   BX   LR            @ return;
     
 _exit:
