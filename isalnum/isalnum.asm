@@ -1,46 +1,61 @@
+@ Data Section
+.data
+in: .asciz "Z"           @ Input string
+out:  .asciz "Result: %d\n" @ Output string
+
+.global printf  @ Write to console output
+.global scanf   @ Read from console input
+
 .section .text
-.global _start
+.global main
 .arm
 
-_start:
- LDR R0,= str1
- LDR R1,[R0]
+main:
+  LDR  R1, =in      @ Charge string with caracter.
+  LDRB R0, [R1, #0] @ Read byte caracter.
+  BL   isalnum      @ Call islower().
+  MOV  R1, R0       @ Ajustar segundo parâmetro do printf com o valor de retorno.
+  LDR  R0, =out     @ Carregar string de saída como primeiro parâmetro do printf.
+  BL   printf       @ Chamar printf para mostrar o resultado.
+  BL   _exit        @ Pedir ao SO para sair do programa.
 
+/*
+ * islower(R0)
+ * R0 - char
+ */
+isadigit:
+  CMP   R0, #'0'     @ Check if R0 value is < code char 'a'.
+  MOVLT R0, #0       @ If true is not lower, return 0.
+  BLT   exit_isalnum @ Exit
+  CMP   R0, #'9'     @ Check if R0 value is > char 'z'.
+  MOVGT R0, #0       @ If true is not lower, return 0.
+  BGT   exit_isalnum @ Exit
+  MOVLE R0, #1       @ 
+  BL islower
 
- CMP R1, #0x00000030  //hexa para o numero 0
- BLT _false // se o enfreço do r0 for maior que o endreço do 0
+islower:
+  CMP   R0, #'a'     @ Check if R0 value is < code char 'a'.
+  MOVLT R0, #0       @ If true is not lower, return 0.
+  BLT   exit_isalnum @ Exit
+  CMP   R0, #'z'     @ Check if R0 value is > char 'z'.
+  MOVGT R0, #0       @ If true is not lower, return 0.
+  BGT   exit_isalnum @ Exit
+  MOVLE R0, #1       @   
+  BL isupper
 
- CMP R1, #0x0000007B //z
- BGT _false // se mais alto que z
+isupper:
+  CMP   R0, #'a'     @ Check if R0 value is < code char 'a'.
+  MOVLT R0, #0       @ If true is not lower, return 0.
+  BLT   exit_isalnum @ Exit
+  CMP   R0, #'z'     @ Check if R0 value is > char 'z'.
+  MOVGT R0, #0       @ If true is not lower, return 0.
+  BGT   exit_isalnum @ Exit
+  MOVLE R0, #1       @   
+  
 
-CMP R1, #0x00000041 //ultimo numero
- BLT _false // no caso de A ser menor que que o r0
-
- CMP R1, #0x0000003A //ultimo numero
- BLT _true // no caso de : ser maior que que o r0
-
- CMP R1, #0x0000005A //ultimo numero
- BLT _true // no caso de : ser maior que que o r0
-
-
-
-    B _false
-
-_true:
-    //MOV R2, #1
-    //MOV R7, #4
-    //SVC #0
-
-    BLT _exit
-
-_false:
-    //MOV R1, #0
-    //PUSH {R1}
-    //POP {R1}
-    BLT _exit
-
+exit_isalnum:
+ BX   LR            @ return;
+    
 _exit:
-    MOV R7, #1
-    SVC #0
-.data
-   str1: .asciz "Y"
+  MOV R7, #1         @ Exit syscall
+  SVC 0              @ Invoke
