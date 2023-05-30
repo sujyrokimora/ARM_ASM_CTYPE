@@ -1,0 +1,3 @@
+as isalpha.asm -o isalpha.o
+gcc isalpha.o -o isalpha
+./isalpha; echo $?
