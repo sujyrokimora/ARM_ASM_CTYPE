@@ -12,22 +12,19 @@ out:  .asciz "Result: %d\n" @ Output string
 main:
   LDR  R1, =in      @ Charge string with caracter.
   LDRB R0, [R1, #0] @ Read byte caracter.
-  BL   isaprint      @ Call islower().
+  BL   isaprint     @ Call isaprint
   MOV  R1, R0       @ Ajustar segundo parâmetro do printf com o valor de retorno.
   LDR  R0, =out     @ Carregar string de saída como primeiro parâmetro do printf.
   BL   printf       @ Chamar printf para mostrar o resultado.
-  B   _exit        @ Pedir ao SO para sair do programa.
+  B   _exit         @ Pedir ao SO para sair do programa.
 
-/*
- * islower(R0)
- * R0 - char
- */
+
 isaprint:
-  CMP   R0, #0x21    @ Check if R0 value is < code char '[NULL]'.
-  MOVLT R0, #1       @ If true is not lower, return 0.
-  BLT   exit_islower @ Exit
-  CMP   R0, #0x7E     @ Check if R0 value is > char '[UNIT SEPARATOR]'.
-  MOVGT R0, #1       @ If true is not lower, return 0.
+  CMP   R0, #0x20    @ If R0<#0x20==" " 
+  MOVLT R0, #1       @ Then R3=1
+  BLT   exit_islower @ Exit this prevents the NEXT CMP from being true
+  CMP   R0, #0x7E    @ If R2>=z.
+  MOVGT R0, #1       @ Then R0=1
   BGT   exit_islower @ Exit
   MOVLE R0, #0       @   
   

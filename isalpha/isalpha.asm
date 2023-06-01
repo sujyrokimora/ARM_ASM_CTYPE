@@ -14,41 +14,36 @@ main:
   LDR  R1, =in      @ Charge string with caracter.
   LDRB R2, [R1, #0] @ Read byte caracter.
   MOV R3, #0
-  BL islower      @ Call islower().
-  BL isupper
-  MOV  R1, R3       @ Ajustar segundo parâmetro do printf com o valor de retorno.
-  LDR  R0, =out     @ Carregar string de saída como primeiro parâmetro do printf.
-  BL   printf       @ Chamar printf para mostrar o resultado.
-  B   _exit        @ Pedir ao SO para sair do programa.
+  BL islower        @ Call islower
+  BL isupper        @ Call isupper
+  MOV  R1, R3       
+  LDR  R0, =out     @ Loads R0 from out var
+  BL   printf       @ Calls printf
+  B   _exit         @ Exit the program
 
-/*
- * islower(R0)
- * R0 - char
- */
+
 islower:
   PUSH {LR}
-  CMP   R2, #'a'     @ Check if R0 value is < code char 'a'.
-  MOVLT R3, #0       @ If true is not lower, return 0.
-  BLT   exit_isalnum @ Exit
-  CMP   R2, #'z'     @ Check if R0 value is > char 'z'.
-  MOVLE R3, #1 
+  CMP   R2, #'a'     @ If R2<a
+  MOVLT R3, #0       @ Then R3=0
+  BLT   exit_isalnum @ Exit this prevents the NEXT CMP from being true
+  CMP   R2, #'z'     @ If R2>=z
+  MOVLE R3, #1 @ Then R3=1
   POP {LR} 
   BX LR
 
 isupper:
   PUSH {LR}
-  CMP   R2, #'A'     @ Check if R0 value is < code char 'a'.
-  MOVLT R3, #0       @ If true is not lower, return 0.
-  BLT   exit_isalnum @ Exit
-  CMP   R2, #'Z'     @ Check if R0 value is > char 'z'.
-  MOVLE R3, #1
-       @
+  CMP   R2, #'A'     @ If R2<A
+  MOVLT R3, #0       @ Then R3=0
+  BLT   exit_isalnum @ Exit this prevents the NEXT CMP from being true
+  CMP   R2, #'Z'     @ If R2>=z
+  MOVLE R3, #1       @ Then R3=1
   POP {LR}
-  BX LR   
-  
+  BX LR     
 
 exit_isalnum:
- BX   LR            @ return;
+ BX   LR             @ return;
     
 _exit:
   MOV R7, #1         @ Exit syscall

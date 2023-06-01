@@ -13,24 +13,24 @@ out:  .asciz "Result: %d\n" @ Output string
 main:
   LDR  R1, =in      @ Charge string with caracter.
   LDRB R0, [R1, #0] @ Read byte caracter.
-  BL   iswhite      @ Call islower().
-  MOV  R1, R0       @ Ajustar segundo parâmetro do printf com o valor de retorno.
-  LDR  R0, =out     @ Carregar string de saída como primeiro parâmetro do printf.
-  BL   printf       @ Chamar printf para mostrar o resultado.
-  B   _exit        @ Pedir ao SO para sair do programa.
+  BL   iswhite      @ Call iswhite
+  MOV  R1, R0       
+  LDR  R0, =out     @ Loads R0 from out var
+  BL   printf       @ Calls printf
+  B   _exit         @ Exit the program
 
 /*
  * islower(R0)
  * R0 - char
  */
 iswhite:
-  CMP   R0, #0x20    @ Check if R0 value is < code char '[NULL]'.
-  MOVLT R0, #0       @ If true is not lower, return 0.
-  BLT   exit_iswhite @ Exit
-  CMP   R0, #0x20   @ Check if R0 value is > char '[UNIT SEPARATOR]'.
-  MOVGT R0, #0       @ If true is not lower, return 0.
-  BGT   exit_iswhite @ Exit
-  MOVLE R0, #1       @   
+  CMP   R0, #0x20    @ If R0<" ".
+  MOVLT R0, #0       @ Then R0=0
+  BLT   exit_iswhite @ Exit this prevents the NEXT CMP from being true
+  CMP   R0, #0x20    @ If R0> " "
+  MOVGT R0, #0       @ Then R0=0
+  BGT   exit_iswhite @ Exit this prevents the NEXT CMP from being true
+  MOVLE R0, #1       @ Else R0=1 
   
   exit_iswhite:
   BX   LR            @ return;

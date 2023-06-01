@@ -13,24 +13,20 @@ out:  .asciz "Result: %d\n" @ Output string
 main:
   LDR  R1, =in      @ Charge string with caracter.
   LDRB R0, [R1, #0] @ Read byte caracter.
-  BL   islower      @ Call islower().
-  MOV  R1, R0       @ Ajustar segundo parâmetro do printf com o valor de retorno.
-  LDR  R0, =out     @ Carregar string de saída como primeiro parâmetro do printf.
-  BL   printf       @ Chamar printf para mostrar o resultado.
-  BL   _exit        @ Pedir ao SO para sair do programa.
+  BL   islower      @ Call islower
+  MOV  R1, R0       
+  LDR  R0, =out     @ Loads R0 from out var
+  BL   printf       @ Calls printf
+  BL   _exit        @ Exit the program
 
-/*
- * islower(R0)
- * R0 - char
- */
 islower:
-  CMP   R0, #'a'     @ Check if R0 value is < code char 'a'.
-  MOVLT R0, #0       @ If true is not lower, return 0.
+  CMP   R0, #'a'     @ If R0<a
+  MOVLT R0, #0       @ Then R0=0
   BLT   exit_islower @ Exit
-  CMP   R0, #'z'     @ Check if R0 value is > char 'z'.
-  MOVGT R0, #0       @ If true is not lower, return 0.
+  CMP   R0, #'z'     @ @If R2>=z
+  MOVGT R0, #0       @ Then R0=0
   BGT   exit_islower @ Exit
-  MOVLE R0, #1       @   
+  MOVLE R0, #1       @ Else R0=1  
   
   exit_islower:
   BX   LR            @ return;
