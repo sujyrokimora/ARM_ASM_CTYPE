@@ -1,3 +1,0 @@
-as test.asm -o test.o
-ld test.o -o test
-./test; echo $?
