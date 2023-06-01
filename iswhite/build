@@ -1,0 +1,3 @@
+as iswhite.asm -o iswhite.o
+gcc iswhite.o -o iswhite
+./iswhite; echo $?

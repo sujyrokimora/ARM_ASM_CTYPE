@@ -1,0 +1,3 @@
+as iscntrl.asm -o iscntrl.o
+gcc iscntrl.o -o iscntrl
+./iscntrl; echo $?
